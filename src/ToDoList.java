@@ -24,7 +24,7 @@ public class ToDoList {
         }
         System.out.println();
 
-
+        //Бесконечный цикл, для того чтобы можно было постоянно вводить командый
         while (true) {
 
             Scanner scan = new Scanner(System.in);

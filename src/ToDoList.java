@@ -44,12 +44,12 @@ public class ToDoList {
             if (arrayCommands[0].equals("HELP")) {
 
                 System.out.println("command <LIST>  -> List of all my cases.\n" +
-                        "command <ADD>   -> Add a new case to the end of the list.\n" +
+                        "command <ADD \"new case\">     -> Add a new case to the end of the list.\n" +
                         "command <ADD N  \"new case\">  -> Add a new case anywhere in the list. N - number of the case in the list.\n" +
                         "command <EDIT N \"new case\">  -> Change (replace) an existing case. N - number of the case in the list.\n" +
                         "command <REMOVE N> -> Delete case. N - number of the case in the list.\n" +
                         "command <EXIT>   -> STOP pragramm.\n" +
-                        "All commands enter without < > !");
+                        "All commands enter without < > and new case without \" \"!");
             }
 
 
@@ -74,19 +74,19 @@ public class ToDoList {
                 }
             }
 
-            if (command.matches("^(EDIT)\\s*\\d+\\s*(.*)$") && Integer.parseInt(arrayCommands[1]) > 0) {
+            if (command.matches("^(EDIT)\\s*\\d+\\s*(.*)$") && Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) {
                 System.out.println("My new list of cases:");
                 String changeddCase = myToDoList.get(Integer.parseInt(arrayCommands[1].trim()) - 1);
                 int numberChangedCase = Integer.parseInt(arrayCommands[1].trim());
 
-                myToDoList.add(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll("(EDIT)\\s*\\d*\\s*", ""));
+                myToDoList.set(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll("(EDIT)\\s*\\d*\\s*", ""));
                 for (int i = 0; i < myToDoList.size(); i++) {
                     System.out.println((i + 1) + ". " + myToDoList.get(i));
                 }
-                System.out.println("Changed case: " + numberChangedCase + ". " + changeddCase);
+                System.out.println("\nChanged case: " + numberChangedCase + ". " + changeddCase);
             }
 
-            if (command.matches("^(DELETE)\\s*\\d+$") && Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) > 0) {
+            if (command.matches("^(DELETE)\\s*\\d+$") && Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) {
                 System.out.println("My new list of cases:");
                 String deletedCase = myToDoList.remove(Integer.parseInt(arrayCommands[1].trim()) - 1);
                 int numberDeletedCase = Integer.parseInt(arrayCommands[1].trim());
@@ -101,6 +101,7 @@ public class ToDoList {
                 for (int i = 0; i < myToDoList.size(); i++) {
                     System.out.println((i + 1) + ". " + myToDoList.get(i));
                 }
+                System.out.println("\nGoodbye!");
                 break;
             }
             System.out.println(myToDoList.size());

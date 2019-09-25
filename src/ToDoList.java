@@ -10,8 +10,8 @@ public class ToDoList {
     private static final String REGEX_ADD_CASE_REPLACEALL = "(ADD)\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD "new case"
     private static final String REGEX_ADD_N_CASE = "^(ADD)\\s+?-?\\d+\\s+?(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
     private static final String REGEX_ADD_N_CASE_REPLACEALL = "(ADD)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD N "new case"
-    private static final String REGEX_EDIT_N_CASE = "^(EDIT)\\s*\\d+\\s*(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
-    private static final String REGEX_EDIT_N_CASE_REPLACEALL = "(EDIT)\\s*\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды EDIT N "new case"
+    private static final String REGEX_EDIT_N_CASE = "^(EDIT)\\s*-?\\d+\\s*(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
+    private static final String REGEX_EDIT_N_CASE_REPLACEALL = "(EDIT)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды EDIT N "new case"
     private static final String REGEX_DELETE_N = "^(DELETE)\\s*\\d+\\s*$"; // создаем константу для проверки регулярным выражением команды DELETE N
     private static final String REGEX_EXIT = "EXIT"; // создаем константу для проверки команды EXIT
 
@@ -28,7 +28,7 @@ public class ToDoList {
                     "  command <ADD \"new case\">     -> Add a new case to the end of the list.\n" +
                     "  command <ADD N  \"new case\">  -> Add a new case anywhere in the list. N - number of the case in the list.\n" +
                     "  command <EDIT N \"new case\">  -> Change (replace) an existing case. N - number of the case in the list.\n" +
-                    "  command <REMOVE N> -> Delete case. N - number of the case in the list.\n" +
+                    "  command <DELETE N> -> Delete case. N - number of the case in the list.\n" +
                     "  command <EXIT>   -> STOP program.\n" +
                     "All commands enter without < > and new case without \" \"! For example:  ADD 2 Go home.");
         } else
@@ -88,27 +88,17 @@ public class ToDoList {
 
             if (command.matches(REGEX_ADD_CASE)) {
                 addNewCaseToTail(command);
-                //myToDoList.add(myToDoList.size(), command.replaceAll(REGEX_ADD_CASE_REPLACEALL, ""));
                 printList();
             }
 
-            //&& Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()
             if (command.matches(REGEX_ADD_N_CASE)) {
-                //myToDoList.add(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll(REGEX_ADD_N_CASE_REPLACEALL, ""));
-                addNewCaswAnywhere(arrayCommands, command);
+                addNewCaseAnywhere(arrayCommands, command);
                 printList();
             }
 
-            if (command.matches(REGEX_EDIT_N_CASE) && Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) {
-                System.out.println("My new list of cases:");
-                String changeddCase = myToDoList.get(Integer.parseInt(arrayCommands[1].trim()) - 1);
-                int numberChangedCase = Integer.parseInt(arrayCommands[1].trim());
-
-                myToDoList.set(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll(REGEX_EDIT_N_CASE_REPLACEALL, ""));
-                for (int i = 0; i < myToDoList.size(); i++) {
-                    System.out.println((i + 1) + ". " + myToDoList.get(i));
-                }
-                System.out.println("\nChanged case: " + numberChangedCase + ". " + changeddCase);
+            if (command.matches(REGEX_EDIT_N_CASE)) {
+                editList(arrayCommands, command);
+                printList();
             }
 
             if (command.matches(REGEX_DELETE_N) && Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) {
@@ -123,12 +113,11 @@ public class ToDoList {
 
             if (arrayCommands[0].equals(REGEX_EXIT)) {
                 System.out.println("My list of cases:");
-                for (int i = 0; i < myToDoList.size(); i++) {
-                    System.out.println((i + 1) + ". " + myToDoList.get(i));
-                }
+                printList();
                 System.out.println("\nGoodbye!");
                 break;
             }
+            System.out.println("");
             System.out.println(myToDoList.size());
         }
     }
@@ -162,7 +151,7 @@ public class ToDoList {
                 "command <ADD \"new case\">     -> Add a new case to the end of the list.\n" +
                 "command <ADD N  \"new case\">  -> Add a new case anywhere in the list. N - number of the case in the list.\n" +
                 "command <EDIT N \"new case\">  -> Change (replace) an existing case. N - number of the case in the list.\n" +
-                "command <REMOVE N> -> Delete case. N - number of the case in the list.\n" +
+                "command <DELETE N> -> Delete case. N - number of the case in the list.\n" +
                 "command <EXIT>   -> STOP pragramm.\n" +
                 "All commands enter without < > and new case without \" \"! For example:  ADD 2 Go home.");
     }
@@ -191,16 +180,40 @@ public class ToDoList {
         myToDoList.add(myToDoList.size(), command.replaceAll(REGEX_ADD_CASE_REPLACEALL, ""));
     }
 
-    public static void addNewCaswAnywhere(String[] arrayCommands, String command) { //метод для добавления нового дела в любую позицию в пределах списка, используя команду "ADD N new case"
-        if (Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) { // проверка команды (является ли позиця дела в пределах списка или нет)
+    //метод для добавления нового дела в любую позицию в пределах списка, используя команду "ADD N new case"
+    public static void addNewCaseAnywhere(String[] arrayCommands, String command) {
+
+        if (Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) - 1 <= myToDoList.size()) { // проверка команды (является ли позиця дела в пределах списка или нет)
             myToDoList.add(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll(REGEX_ADD_N_CASE_REPLACEALL, ""));
-        } else if (Integer.parseInt(arrayCommands[1]) <= 0) {
-            System.out.println("\nВы ввели недопустимый номер дела. Номер позиции не может быть отрицательным числом.");
+        }
+        else if (Integer.parseInt(arrayCommands[1]) <= 0) { // проверка на отрицательное число для позиции дела в списке
+            System.out.println("\nВы ввели недопустимый номер дела. Номер позиции не может быть отрицательным числом или равным нулю 0.");
+        }
+        else if (myToDoList.isEmpty() && Integer.parseInt(arrayCommands[1]) - 1 <= myToDoList.size()) { // если список пуст, то добавляем дело только на первую позицию списка
+            myToDoList.add(myToDoList.size(), command.replaceAll(REGEX_ADD_N_CASE_REPLACEALL, ""));
+        }
+        else System.out.println("\nВы вышли за пределы списка! Существующий список дел имеет " + myToDoList.size() + " запись-(и/ей). Ознакомьтесь со списком еще раз");
+    }
+
+    // метод редактирования определенной строки в списке под номером N (замена строки)
+    public static void editList(String[] arrayCommands, String command) {
+
+        if (Integer.parseInt(arrayCommands[1]) > 0 && Integer.parseInt(arrayCommands[1]) <= myToDoList.size()) {
+            System.out.println("Your changed list of cases:");
+            String changeddCase = myToDoList.get(Integer.parseInt(arrayCommands[1].trim()) - 1);
+            int numberChangedCase = Integer.parseInt(arrayCommands[1].trim());
+
+            myToDoList.set(Integer.parseInt(arrayCommands[1].trim()) - 1, command.replaceAll(REGEX_EDIT_N_CASE_REPLACEALL, ""));
+            //printList();
+            System.out.println("\nChanged (removed) case in (from) list: " + numberChangedCase + ". " + changeddCase);
+        }
+        else if (Integer.parseInt(arrayCommands[1]) <= 0) { // проверка на отрицательное число для позиции дела в списке
+            System.out.println("\nВы ввели недопустимый номер дела. Номер позиции не может быть отрицательным числом или равным нулю 0.");
         }
         else if (myToDoList.isEmpty()) {
-            addNewCaseToTail(command);
+            System.out.println("Create new list of cases or enter command TRY for use template to-do-list.");
         }
-        else System.out.println("Вы вышли за пределы списка. Существующий список дел имеет " + myToDoList.size() + " записи -(ей). Ознакомьтесь со списком еще раз");
+        else System.out.println("\nВы вышли за пределы списка! Существующий список дел имеет " + myToDoList.size() + " запись-(и/ей). Ознакомьтесь со списком еще раз");
     }
 
 }

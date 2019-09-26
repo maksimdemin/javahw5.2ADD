@@ -105,9 +105,7 @@ public class ToDoList {
                 System.out.println("My new list of cases:");
                 String deletedCase = myToDoList.remove(Integer.parseInt(arrayCommands[1].trim()) - 1);
                 int numberDeletedCase = Integer.parseInt(arrayCommands[1].trim());
-                for (int i = 0; i < myToDoList.size(); i++) {
-                    System.out.println((i + 1) + ". " + myToDoList.get(i));
-                }
+                printList();
                 System.out.println("Deleted case: " + numberDeletedCase + ". " + deletedCase);
             }
 
@@ -214,6 +212,10 @@ public class ToDoList {
             System.out.println("Create new list of cases or enter command TRY for use template to-do-list.");
         }
         else System.out.println("\nВы вышли за пределы списка! Существующий список дел имеет " + myToDoList.size() + " запись-(и/ей). Ознакомьтесь со списком еще раз");
+    }
+
+    public static void deleteCase(String[] arrayCommands) {
+
     }
 
 }

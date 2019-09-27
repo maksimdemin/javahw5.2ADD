@@ -13,7 +13,7 @@ public class Main {
 
                     command = command.replaceFirst("^\\s+", ""); // удаляем все пробелы в начале введенной пробелы
                     command = command.replaceAll("\\s+", " "); // ищем все пробелы и заменяем их на один пробел
-                    String[] arrayCommands = command.split(" ");
+                    String[] arrayCommands = command.split(" "); // введеную команду разделяем методом split() и сохраняем всё в массив строк
 
                 if (!command.matches("EXIT")) {
 

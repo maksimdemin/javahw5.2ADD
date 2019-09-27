@@ -11,8 +11,8 @@ public class Main {
                     System.out.println("\nEnter the command: ");
                     String command = scan.nextLine();
 
-                    command = command.replaceFirst("^\\s+", "");
-                    command = command.replaceAll("\\s+", " ");
+                    command = command.replaceFirst("^\\s+", ""); // удаляем все пробелы в начале введенной пробелы
+                    command = command.replaceAll("\\s+", " "); // ищем все пробелы и заменяем их на один пробел
                     String[] arrayCommands = command.split(" ");
 
                 if (!command.matches("EXIT")) {

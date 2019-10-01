@@ -2,17 +2,17 @@ import java.util.*;
 
 public class ToDoList {
 
-    public static final String REGEX_TRY = "TRY"; // создаем константу для проверки команды TRY
-    private static final String REGEX_HELP = "HELP"; // создаем константу для проверки команды HELP
-    private static final String REGEX_LIST = "LIST"; // создаем константу для проверки команды LIST
-    private static final String REGEX_CLEAR = "CLEAR"; // создаем константу для проверки команды CLEAR
-    private static final String REGEX_ADD_CASE = "^(ADD)\\s*[^-?0-9]([^-?0-9].*)$"; // создаем константу для проверки регулярным выражением команды ADD "new case"
-    private static final String REGEX_ADD_CASE_REPLACEALL = "(ADD)\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD "new case"
-    private static final String REGEX_ADD_N_CASE = "^(ADD)\\s+?-?\\d+\\s+?(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
-    private static final String REGEX_ADD_N_CASE_REPLACEALL = "(ADD)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD N "new case"
-    private static final String REGEX_EDIT_N_CASE = "^(EDIT)\\s*-?\\d+\\s*(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
-    private static final String REGEX_EDIT_N_CASE_REPLACEALL = "(EDIT)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды EDIT N "new case"
-    private static final String REGEX_DELETE_N = "^(DELETE)\\s*-?\\d+\\s*$"; // создаем константу для проверки регулярным выражением команды DELETE N
+    private static final String REGEX_TRY = "^(?i)(TRY)$"; // создаем константу для проверки регулярным выражением команды ADD "new case"
+    private static final String REGEX_HELP = "^(?i)(HELP)$"; // создаем константу для проверки команды HELP
+    private static final String REGEX_LIST = "^(?i)(LIST)$"; // создаем константу для проверки команды LIST
+    private static final String REGEX_CLEAR = "^(?i)(CLEAR)$"; // создаем константу для проверки команды CLEAR
+    private static final String REGEX_ADD_CASE = "^(?i)(ADD)\\s*[^-?0-9]([^-?0-9].*)$"; // создаем константу для проверки регулярным выражением команды ADD "new case"
+    private static final String REGEX_ADD_CASE_REPLACEALL = "(?i)(ADD)\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD "new case"
+    private static final String REGEX_ADD_N_CASE = "^(?i)(ADD)\\s+?-?\\d+\\s+?(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
+    private static final String REGEX_ADD_N_CASE_REPLACEALL = "(?i)(ADD)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды ADD N "new case"
+    private static final String REGEX_EDIT_N_CASE = "^(?i)(EDIT)\\s*-?\\d+\\s*(.*)$"; // создаем константу для проверки регулярным выражением команды команды ADD N "new case"
+    private static final String REGEX_EDIT_N_CASE_REPLACEALL = "(?i)(EDIT)\\s*-?\\d*\\s*"; // создаем константу для вырезания нового кейса из введенной строки для команды EDIT N "new case"
+    private static final String REGEX_DELETE_N = "^(?i)(DELETE)\\s*-?\\d+\\s*$"; // создаем константу для проверки регулярным выражением команды DELETE N
 
     private static ArrayList<String> myToDoList = new ArrayList<>(); // создаем список элементов myToDoList
 
@@ -38,14 +38,14 @@ public class ToDoList {
     // метод проверки команд введеных из консоли
             public static void checkCommand (String[]arrayCommands, String command) {
 
-                if (arrayCommands[0].equals(REGEX_TRY)) {
+                if (arrayCommands[0].matches(REGEX_TRY)) {
                     tryUseMyListCases();
                     printList();
-                } else if (arrayCommands[0].equals(REGEX_HELP)) {
+                } else if (arrayCommands[0].matches(REGEX_HELP)) {
                     printHelp();
-                } else if (arrayCommands[0].equals(REGEX_LIST)) {
+                } else if (arrayCommands[0].matches(REGEX_LIST)) {
                     printList();
-                } else if (arrayCommands[0].equals(REGEX_CLEAR)) {
+                } else if (arrayCommands[0].matches(REGEX_CLEAR)) {
                     clearList();
                 } else if (command.matches(REGEX_ADD_CASE)) {
                     addNewCaseToTail(command);

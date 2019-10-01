@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         //ToDoList.tryUseMyListCases(); // чтобы не создавать новый список с нуля, можно активировать эту строку и загружать сразу шаблон
         ToDoList.welcomeHelpList(); // вначале запускаем информационный метод с разделом справки, если список пуст, то запускается другой метод
 
